@@ -1,4 +1,4 @@
-
+import cadquery as cq
 
 class Context:
 
@@ -13,6 +13,21 @@ class Context:
     def __exit__(self, t, value, traceback):
         print(t, value, traceback)
         self.context_stack.pop()
+    
+    @classmethod
+    def current(cls):
+        return cls.context_stack[-1]
+
+
+
+class Part(Context):
+
+    def __init__(self, plane = "front" | "back" | "right" | "left" | "top" | "bottom"):
+        self._cq = cq.Workplane(plane)
+
+
+
+
 
 
 
@@ -25,9 +40,8 @@ class CoordiateSystem(Context):
 class Box:
 
     def __init__(self, l, w, h):
-        self.l = l
-        self.w = w
-        self.h = h
+        ctx = Context.current()
+        self._cq = ctx.box(l, w, h)
     
     def faces():
         return [0, 1, 2, 3, 4, 5]
@@ -44,13 +58,3 @@ class PolyLine:
 
     def angle(self, angle, d):
         pass
-
-    
-
-
-
-with Context():
-    with Context():
-        ok = 1
-
-print(ok)
