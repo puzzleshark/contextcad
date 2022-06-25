@@ -17,6 +17,3 @@ class Box:
     
     def _ipython_display_(self):
         return self._cq._ipython_display_()
-
-with Coords("front"):
-    Box(5, 5, 5)

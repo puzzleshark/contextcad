@@ -1,9 +1,11 @@
-import cad.context
+import beautifulcad
+import beautifulcad.context
+import beautifulcad.shapes
 
-#%%
+import jupyter_cadquery
 
-with cad.context.Coords("front"):
-    print(cad.context.Context.context_stack)
-    print("hi")
-    cad.context.Box(5, 5, 5)
-# %%
+with beautifulcad.context.Coords("front"):
+    b = beautifulcad.shapes.Box(5, 5, 5)
+
+
+jupyter_cadquery.Part(b._box).show()
