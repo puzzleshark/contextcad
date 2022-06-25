@@ -1,18 +1,18 @@
 import jupyter_cadquery
 from cadquery import Vector, Plane
 
-from beautifulcad.context import Context
-from beautifulcad.context import SolidsWorkbench
+# from beautifulcad.context import Context
+# from beautifulcad.context import SolidsWorkbench
 from cadquery.occ_impl.shapes import Solid as CQSolid
 from cadquery.occ_impl.shapes import Face as CQFace
 import cadquery as cq
 
 
 
-class Shape:
+class Solid:
 
-    def __init__(self, cq_shape, moved=False):
-        self.ctx = Context.current()
+    def __init__(self, cq_shape, moved=False, ctx=None):
+        self.ctx = ctx
         self._cq_shape = cq_shape
         if not moved:
             cq_shape.move(self.ctx.plane.location)
@@ -33,16 +33,17 @@ class Shape:
         return faces[0]
     
     def hole(self, diameter):
+        pass
 
-        boreDir = Vector(0, 0, -1)
-        # first make the hole
-        h = CQSolid.makeCylinder(
-            diameter / 2., self._cq_shape.BoundingBox().DiagonalLength, Vector(), boreDir
-        )  # local coordinates!
+        # boreDir = Vector(0, 0, -1)
+        # # first make the hole
+        # h = CQSolid.makeCylinder(
+        #     diameter / 2., self._cq_shape.BoundingBox().DiagonalLength, Vector(), boreDir
+        # )  # local coordinates!
 
-        h.move(Context.current().plane.location)
+        # h.move(Context.current().plane.location)
 
-        return Shape(self._cq_shape.cut(h).clean(), moved=True)
+        # return Shape(self._cq_shape.cut(h).clean(), moved=True)
 
 
     def _ipython_display_(self):

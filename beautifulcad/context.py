@@ -2,6 +2,8 @@ import cadquery as cq
 import jupyter_cadquery
 from cadquery import Plane
 
+import beautifulcad.solids as solids
+
 
 class Context:
 
@@ -40,6 +42,10 @@ class SolidsWorkbench(Context):
     def __init__(self, plane=Plane.named("front")):
         self.plane = plane
         super().__init__()
+    
+
+    def box(self, length, width, height):
+            return solids.Box(length, width, height)
 
 
 class ShapesWorkbench(Context):
@@ -49,13 +55,5 @@ class LinesWorkbench(Context):
     pass
 
 
-class PolyLine:
-
-    def __init__(self):
-        pass
-
-    def line(self, x, y):
-        pass
-
-    def angle(self, angle, d):
-        pass
+def solids_workbench(plane: str):
+    return SolidsWorkbench(plane)
