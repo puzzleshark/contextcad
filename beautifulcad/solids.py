@@ -9,7 +9,7 @@ import cadquery as cq
 
 class Solid:
 
-    def __init__(self, cq_shape, moved=False, ctx=None):
+    def __init__(self, cq_shape, ctx, moved=False):
         self.ctx = ctx
         self._cq_shape = cq_shape
         if not moved:
@@ -28,7 +28,7 @@ class Solid:
             .faces(selector)
         )
         self.ctx.current().add(wp)
-        return [Face(f) for f in wp.objects]
+        return [Face(f, self.ctx.current()) for f in wp.objects]
     
     def face(self, selector=None):
         faces = self.faces(selector)
@@ -51,14 +51,14 @@ class Solid:
 
 class Cylinder(Solid):
 
-    def __init__(self, radius, height):
-        super().__init__(CQSolid.makeCylinder(radius, height))
+    def __init__(self, radius, height, ctx):
+        super().__init__(CQSolid.makeCylinder(radius, height), ctx)
 
 
 class Box(Solid):
 
-    def __init__(self, l, w, h):
-        super().__init__(CQSolid.makeBox(l, w, h))
+    def __init__(self, l, w, h, ctx):
+        super().__init__(CQSolid.makeBox(l, w, h), ctx)
 
 
 class Face:

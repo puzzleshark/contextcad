@@ -1,9 +1,10 @@
 import abc
 
 from cadquery import Plane
-from solids_workbench import SolidsWorkbench
-from shapes_workbench import ShapesWorkbench
-from lines_workbench import LinesWorkbench
+
+from beautifulcad.solids_workbench import SolidsWorkbench
+from beautifulcad.shapes_workbench import ShapesWorkbench
+from beautifulcad.lines_workbench import LinesWorkbench
 
 import typing as t
 
@@ -25,11 +26,13 @@ class Context(abc.ABC):
         pass
 
     def __enter__(self):
-        self.outer_context.inner_context = self
+        if self.outer_context is not None:
+            self.outer_context.inner_context = self
         return self.workbench()
 
     def __exit__(self, t, value, traceback):
-        self.outer_context.inner_context = None
+        if self.outer_context is not None:
+            self.outer_context.inner_context = None
 
     def current(self):
         if self.outer_context is not None:
