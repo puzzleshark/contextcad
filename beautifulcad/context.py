@@ -48,9 +48,9 @@ class Context():
 
 class SolidsContext(Context):
 
-    def __init__(self, plane=Plane.named("front")):
+    def __init__(self, outer_context, plane=Plane.named("front")):
         self.plane = plane
-        super().__init__()
+        super().__init__(outer_context)
     
     def workbench():
         return SolidsWorkbench()
@@ -58,10 +58,14 @@ class SolidsContext(Context):
 
 
 class ShapesContext(Context):
-    pass
+
+    def __init__(self, outer_context):
+        super().__init__(outer_context)
 
 class LinesContext(Context):
-    pass
+
+    def __init__(self, outer_context):
+        super().__init__(outer_context)
 
 
 def solids_workbench(plane: str):
