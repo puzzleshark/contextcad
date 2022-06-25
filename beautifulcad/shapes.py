@@ -20,8 +20,12 @@ class Shape:
 
         self.ctx.add(jupyter_cadquery.Part(self._cq_shape))
     
-    def faces(self):
+    def faces(self, selector = None):
         cq_faces = self._cq_shape.Faces()
+        if selector is not None:
+            select_obj = cq.selectors.StringSyntaxSelector(selector)
+            cq_faces = select_obj.filter(cq_faces)
+
         wp = cq.Workplane()
         wp.add(cq_faces)
         Context.current().add(jupyter_cadquery.Faces(wp))
