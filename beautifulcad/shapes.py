@@ -17,19 +17,20 @@ class Shape:
         if not moved:
             cq_shape.move(self.ctx.plane.location)
         
-
-        self.ctx.add(jupyter_cadquery.Part(self._cq_shape))
+        wp = cq.Workplane(self.ctx.plane)
+        wp.add(cq_shape)
+        self.ctx.add(wp)
     
     def faces(self, selector = None):
-        cq_faces = self._cq_shape.Faces()
-        if selector is not None:
-            select_obj = cq.selectors.StringSyntaxSelector(selector)
-            cq_faces = select_obj.filter(cq_faces)
-
-        wp = cq.Workplane()
-        wp.add(cq_faces)
-        Context.current().add(jupyter_cadquery.Faces(wp))
-        return [Face(f) for f in cq_faces]
+        wp = cq.Workplane(Context.current().plane)
+        wp.add(self._cq_shape)
+        Context.current().add(wp.faces(selector))
+        return [Face(f) for f in wp.objects]
+    
+    def face(self, selector = None):
+        faces = self.faces(selector)
+        assert len(faces) == 1
+        return faces[0]
     
     def hole(self, diameter):
 
