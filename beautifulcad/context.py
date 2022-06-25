@@ -26,14 +26,10 @@ class Coords(Context):
         self._cq = cq.Workplane(plane)
         super().__init__()
     
-    def _ipython_display_(self):
-        return self._cq._ipython_display_()
+    # def _ipython_display_(self):
+    #     return self._cq._ipython_display_()
 
-
-class CoordiateSystem(Context):
-    
-    def __init__(self, face):
-        self.face = face
+plane = Plane(offsetCenter, xDir, normal)
 
 
 
