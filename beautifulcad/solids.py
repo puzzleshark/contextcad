@@ -15,34 +15,34 @@ class Solid:
         if not moved:
             cq_shape.move(self.ctx.plane.location)
         
-        wp = cq.Workplane(self.ctx.plane)
-        wp.add(cq_shape)
+        wp = (
+            cq.Workplane(self.ctx.plane)
+            .add(self._cq_shape)
+        )
         self.ctx.add(wp)
     
     def faces(self, selector=None):
-        wp = cq.Workplane(self.ctx.current().plane)
-        wp.add(self._cq_shape)
-        self.ctx.current().add(wp.faces(selector))
+        wp = (
+            cq.Workplane(self.ctx.current().plane)
+            .add(self._cq_shape)
+            .faces(selector)
+        )
+        self.ctx.current().add(wp)
         return [Face(f) for f in wp.objects]
     
-    def face(self, selector = None):
+    def face(self, selector=None):
         faces = self.faces(selector)
         assert len(faces) == 1
         return faces[0]
     
     def hole(self, diameter):
-        cq.Workplane(self.ctx.current().plane)
-        # pass
-
-        # boreDir = Vector(0, 0, -1)
-        # # first make the hole
-        # h = CQSolid.makeCylinder(
-        #     diameter / 2., self._cq_shape.BoundingBox().DiagonalLength, Vector(), boreDir
-        # )  # local coordinates!
-
-        # h.move(Context.current().plane.location)
-
-        # return Shape(self._cq_shape.cut(h).clean(), moved=True)
+        wp = (
+            cq.Workplane(self.ctx.current().plane)
+            .add(self._cq_shape)
+            .hole(diameter)
+        )
+        self.ctx.current().add(wp)
+        return wp.objects[0]
 
 
     def _ipython_display_(self):
@@ -63,13 +63,13 @@ class Box(Solid):
 
 class Face:
 
-    def __init__(self, cq_face: CQFace):
-        self.ctx = Context.current()
+    def __init__(self, cq_face: CQFace, ctx):
+        self.ctx = ctx
         self._face = cq_face
 
     @property
     def plane(self):
-        new_context = Context.current()
+        new_context = self.ctx.current()
         center = self._face.Center()
         normal = self._face.normalAt(center)
 
@@ -97,8 +97,9 @@ class Face:
 
         return plane
     
-    def coords(self):
-        return SolidsWorkbench(self.plane)
+    def solids_workbench(self):
+        pass
+        # return SolidsContext(self.plane)
 
     def _ipython_display_(self):
         return jupyter_cadquery.Part(self._face).show()
