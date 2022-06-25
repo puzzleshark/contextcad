@@ -1,3 +1,4 @@
+import solids
 
 class SolidsWorkbench():
 
