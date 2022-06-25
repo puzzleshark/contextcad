@@ -5,11 +5,21 @@ from beautifulcad.context import Context
 from cadquery.occ_impl.shapes import Solid as CQSolid
 from cadquery.occ_impl.shapes import Face as CQFace
 
+class Cylinder:
+
+    def __init__(self, radius, height):
+        self.ctx = Context.current()
+        self._cylinder = CQSolid.makeCylinder(radius, height).move(self.ctx.plane.location)
+
+    def _ipython_display_(self):
+        return jupyter_cadquery.Part(self._cylinder).show()
+
+
 class Box:
 
     def __init__(self, l, w, h):
         self.ctx = Context.current()
-        self._box = CQSolid.makeBox(l, w, h)
+        self._box = CQSolid.makeBox(l, w, h).move(self.ctx.plane.location)
     
     def faces(self):
         return [Face(f) for f in self._box.Faces()]
@@ -56,11 +66,11 @@ class Face:
         xDir = _computeXdir(normal)
 
 
-        fixed_center = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(center))
-        fixed_xDir = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(xDir))
-        fixed_normal = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(normal))
+        # center = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(center))
+        # xDir = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(xDir))
+        # normal = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(normal))
 
-        plane = Plane(fixed_center, fixed_xDir, fixed_normal)
+        plane = Plane(center, xDir, normal)
 
         return plane
 
