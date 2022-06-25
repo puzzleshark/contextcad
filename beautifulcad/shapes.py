@@ -5,6 +5,7 @@ from beautifulcad.context import Context
 from beautifulcad.context import Coords
 from cadquery.occ_impl.shapes import Solid as CQSolid
 from cadquery.occ_impl.shapes import Face as CQFace
+import cadquery as cq
 
 
 
@@ -17,10 +18,14 @@ class Shape:
             cq_shape.move(self.ctx.plane.location)
         
 
-        self.ctx.add(self)
+        self.ctx.add(jupyter_cadquery.Part(self._cq_shape))
     
     def faces(self):
-        return [Face(f) for f in self._cq_shape.Faces()]
+        cq_faces = self._cq_shape.Faces()
+        wp = cq.Workplane()
+        wp.add(cq_faces)
+        Context.current().add(jupyter_cadquery.Faces(wp))
+        return [Face(f) for f in cq_faces]
     
     def hole(self, diameter):
 

@@ -31,7 +31,11 @@ class Context:
     
     def _ipython_display_(self):
         if len(self.objects) > 0:
-            return self.objects[-1]._ipython_display_()
+            ok = self.objects[-1]
+            if isinstance(ok, Context):
+                return self.objects[-1]._ipython_display_()
+            else:
+                return ok.show()
 
 
 
