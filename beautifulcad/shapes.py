@@ -1,4 +1,5 @@
 import jupyter_cadquery
+from cadquery import Vector, Plane
 
 from beautifulcad.context import Context
 from cadquery.occ_impl.shapes import Solid as CQSolid
@@ -27,6 +28,26 @@ class Face:
     def plane(self):
         new_context = Context.current()
         center = self._face.Center()
+        normal = self._face.normalAt(center)
+
+        def _computeXdir(normal):
+            """
+            Figures out the X direction based on the given normal.
+            :param :normal The direction that's normal to the plane.
+            :type :normal A Vector
+            :return A vector representing the X direction.
+            """
+            xd = Vector(0, 0, 1).cross(normal)
+            if xd.Length < self.ctx.tolerance:
+                # this face is parallel with the x-y plane, so choose x to be in global coordinates
+                xd = Vector(1, 0, 0)
+            return xd
+
+        xDir = _computeXdir(normal)
+
+        plane = Plane(center, xDir, normal)
+
+        return plane
 
     def _ipython_display_(self):
         return jupyter_cadquery.Part(self._face).show()
