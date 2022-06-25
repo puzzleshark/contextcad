@@ -20,7 +20,7 @@ class Context:
 
 
 
-class Part(Context):
+class Coords(Context):
 
     def __init__(self, plane):
         self._cq = cq.Workplane(plane)

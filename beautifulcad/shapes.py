@@ -1,4 +1,4 @@
-from beautifulcad.context import Context, Part
+from beautifulcad.context import Context, Coords
 
 import cadquery as cq
 
@@ -10,7 +10,7 @@ class Box:
         ctx = Context.current()
         # ctx._cq = ctx._cq.box(l, w, h)
         # self._cq = ctx._cq
-        self.box = Solid.makeBox(l, w, h)
+        self._box = Solid.makeBox(l, w, h)
     
     def faces(self, selector):
         return self._cq.faces(selector)
@@ -18,5 +18,5 @@ class Box:
     def _ipython_display_(self):
         return self._cq._ipython_display_()
 
-with Part("front"):
+with Coords("front"):
     Box(5, 5, 5)
