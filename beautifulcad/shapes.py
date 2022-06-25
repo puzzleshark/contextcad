@@ -19,6 +19,9 @@ class Shape:
 
         self.ctx.add(self)
     
+    def faces(self):
+        return [Face(f) for f in self._cq_shape.Faces()]
+    
     def hole(self, diameter):
 
         boreDir = Vector(0, 0, -1)
@@ -46,9 +49,6 @@ class Box(Shape):
 
     def __init__(self, l, w, h):
         super().__init__(CQSolid.makeBox(l, w, h))
-    
-    def faces(self):
-        return [Face(f) for f in self._cq_shape.Faces()]
 
 
 class Face:

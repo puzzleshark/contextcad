@@ -9,6 +9,8 @@ class Context:
 
     def __init__(self):
         self.objects = []
+        if len(self.context_stack) > 0:
+            self.current().add(self)
 
     def __enter__(self):
         self.context_stack.append(self)
@@ -28,7 +30,8 @@ class Context:
         return cls.context_stack[-1]
     
     def _ipython_display_(self):
-        return self.current().objects[-1]._ipython_display_()
+        if len(self.objects) > 0:
+            return self.objects[-1]._ipython_display_()
 
 
 
@@ -37,9 +40,6 @@ class Coords(Context):
     def __init__(self, plane=Plane.named("front")):
         self.plane = plane
         super().__init__()
-    
-    # def _ipython_display_(self):
-        # return self._cq._ipython_display_()
 
 
 
