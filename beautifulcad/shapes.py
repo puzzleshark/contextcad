@@ -5,25 +5,14 @@ from beautifulcad.context import Context
 from cadquery.occ_impl.shapes import Solid as CQSolid
 from cadquery.occ_impl.shapes import Face as CQFace
 
-class Cylinder:
 
-    def __init__(self, radius, height):
+
+class Shape:
+
+    def __init__(self, cq_shape):
+        self._cq_shape = cq_shape
         self.ctx = Context.current()
-        self._cylinder = CQSolid.makeCylinder(radius, height).move(self.ctx.plane.location)
-
-    def _ipython_display_(self):
-        return jupyter_cadquery.Part(self._cylinder).show()
-
-
-class Box:
-
-    def __init__(self, l, w, h):
-        self.ctx = Context.current()
-        self._box = CQSolid.makeBox(l, w, h).move(self.ctx.plane.location)
     
-    def faces(self):
-        return [Face(f) for f in self._box.Faces()]
-
     def hole(self, diameter, depth):
 
         boreDir = Vector(0, 0, -1)
@@ -34,13 +23,26 @@ class Box:
 
         new_h = h.moved(Context.current().plane.location)
 
-        # self._box.
-        # return h
+        return Shape(self._box.cut(new_h).clean())
 
-        return self._box.cut(new_h).clean()
-    
+
     def _ipython_display_(self):
-        return jupyter_cadquery.Part(self._box).show()
+        return jupyter_cadquery.Part(self._cq_shape).show()
+
+
+class Cylinder(Shape):
+
+    def __init__(self, radius, height):
+        super().__init__(CQSolid.makeCylinder(radius, height).move(self.ctx.plane.location))
+
+
+class Box(Shape):
+
+    def __init__(self, l, w, h):
+        super().__init__(CQSolid.makeBox(l, w, h).move(self.ctx.plane.location))
+    
+    def faces(self):
+        return [Face(f) for f in self._box.Faces()]
 
 
 class Face:
