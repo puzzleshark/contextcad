@@ -2,6 +2,7 @@ import jupyter_cadquery
 from cadquery import Vector, Plane
 
 from beautifulcad.context import Context
+from beautifulcad.context import Coords
 from cadquery.occ_impl.shapes import Solid as CQSolid
 from cadquery.occ_impl.shapes import Face as CQFace
 
@@ -14,6 +15,9 @@ class Shape:
         self._cq_shape = cq_shape
         if not moved:
             cq_shape.move(self.ctx.plane.location)
+        
+
+        self.ctx.add()
     
     def hole(self, diameter):
 
@@ -82,6 +86,9 @@ class Face:
         plane = Plane(center, xDir, normal)
 
         return plane
+    
+    def coords(self):
+        return Coords(self.plane)
 
     def _ipython_display_(self):
         return jupyter_cadquery.Part(self._face).show()
