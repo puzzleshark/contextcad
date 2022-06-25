@@ -23,13 +23,11 @@ class Context:
 class Coords(Context):
 
     def __init__(self, plane):
-        self._cq = cq.Workplane(plane)
+        self.plane = plane
         super().__init__()
     
     # def _ipython_display_(self):
     #     return self._cq._ipython_display_()
-
-plane = Plane(offsetCenter, xDir, normal)
 
 
 
