@@ -13,6 +13,16 @@ class Box:
     
     def faces(self):
         return [Face(f) for f in self._box.Faces()]
+
+    def hole(self, diameter, depth):
+
+        boreDir = Vector(0, 0, -1)
+        # first make the hole
+        h = CQSolid.makeCylinder(
+            diameter / 2.0, depth, Vector(), boreDir
+        )  # local coordinates!
+
+        return self._box.cut(h)
     
     def _ipython_display_(self):
         return jupyter_cadquery.Part(self._box).show()
@@ -38,7 +48,7 @@ class Face:
             :return A vector representing the X direction.
             """
             xd = Vector(0, 0, 1).cross(normal)
-            if xd.Length < self.ctx.tolerance:
+            if xd.Length < 0.01:
                 # this face is parallel with the x-y plane, so choose x to be in global coordinates
                 xd = Vector(1, 0, 0)
             return xd
@@ -46,9 +56,9 @@ class Face:
         xDir = _computeXdir(normal)
 
 
-        fixed_center = new_context.toLocalCoords(self.ctx.plane.toWorldCoords(center))
-        fixed_xDir = new_context.toLocalCoords(self.ctx.plane.toWorldCoords(xDir))
-        fixed_normal = new_context.toLocalCoords(self.ctx.plane.toWorldCoords(normal))
+        fixed_center = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(center))
+        fixed_xDir = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(xDir))
+        fixed_normal = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(normal))
 
         plane = Plane(fixed_center, fixed_xDir, fixed_normal)
 

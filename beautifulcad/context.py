@@ -1,5 +1,7 @@
 import cadquery as cq
 import jupyter_cadquery
+from cadquery import Plane
+
 
 class Context:
 
@@ -22,7 +24,7 @@ class Context:
 
 class Coords(Context):
 
-    def __init__(self, plane):
+    def __init__(self, plane=Plane.named("front")):
         self.plane = plane
         super().__init__()
     
