@@ -14,6 +14,8 @@ class Context:
     
     @classmethod
     def current(cls):
+        if len(cls.context_stack) == 0:
+            raise ValueError("no beautifulcad context!")
         return cls.context_stack[-1]
 
 
@@ -32,19 +34,6 @@ class CoordiateSystem(Context):
     
     def __init__(self, face):
         self.face = face
-
-
-class Box:
-
-    def __init__(self, l, w, h):
-        ctx = Context.current()
-        ctx._cq = ctx._cq.box(l, w, h)
-    
-    def faces():
-        return [0, 1, 2, 3, 4, 5]
-    
-    def _ipython_display_(self):
-        return self._cq._ipython_display_()
 
 
 
