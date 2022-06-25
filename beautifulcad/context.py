@@ -68,6 +68,9 @@ class LinesContext(Context):
     def __init__(self, outer_context):
         super().__init__(outer_context)
 
+    def workbench(self):
+        return LinesWorkbench(self)
+
 
 def solids_workbench(plane: str):
     return SolidsContext(plane)
