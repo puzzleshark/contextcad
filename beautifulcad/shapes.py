@@ -45,7 +45,12 @@ class Face:
 
         xDir = _computeXdir(normal)
 
-        plane = Plane(center, xDir, normal)
+
+        fixed_center = new_context.toLocalCoords(self.ctx.plane.toWorldCoords(center))
+        fixed_xDir = new_context.toLocalCoords(self.ctx.plane.toWorldCoords(xDir))
+        fixed_normal = new_context.toLocalCoords(self.ctx.plane.toWorldCoords(normal))
+
+        plane = Plane(fixed_center, fixed_xDir, fixed_normal)
 
         return plane
 
