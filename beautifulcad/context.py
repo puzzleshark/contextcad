@@ -5,7 +5,7 @@ from cadquery import Plane
 import beautifulcad.solids as solids
 
 
-class Context:
+class Context():
 
     def __init__(self, outer_context):
         self.outer_context = outer_context
@@ -17,7 +17,7 @@ class Context:
 
     def __enter__(self):
         self.outer_context.inner_context = self
-        return self
+        return self.workbench()
 
     def __exit__(self, t, value, traceback):
         self.outer_context.inner_context = None
@@ -52,9 +52,9 @@ class SolidsContext(Context):
         self.plane = plane
         super().__init__()
     
+    def workbench():
+        return SolidsWorkbench()
 
-    def box(self, length, width, height):
-            return solids.Box(length, width, height)
 
 
 class ShapesContext(Context):
