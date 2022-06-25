@@ -1,8 +1,6 @@
 import jupyter_cadquery
 from cadquery import Vector, Plane
 
-# from beautifulcad.context import Context
-# from beautifulcad.context import SolidsWorkbench
 from cadquery.occ_impl.shapes import Solid as CQSolid
 from cadquery.occ_impl.shapes import Face as CQFace
 import cadquery as cq
@@ -21,10 +19,10 @@ class Solid:
         wp.add(cq_shape)
         self.ctx.add(wp)
     
-    def faces(self, selector = None):
-        wp = cq.Workplane(Context.current().plane)
+    def faces(self, selector=None):
+        wp = cq.Workplane(self.ctx.current().plane)
         wp.add(self._cq_shape)
-        Context.current().add(wp.faces(selector))
+        self.ctx.current().add(wp.faces(selector))
         return [Face(f) for f in wp.objects]
     
     def face(self, selector = None):
@@ -33,7 +31,8 @@ class Solid:
         return faces[0]
     
     def hole(self, diameter):
-        pass
+        cq.Workplane(self.ctx.current().plane)
+        # pass
 
         # boreDir = Vector(0, 0, -1)
         # # first make the hole

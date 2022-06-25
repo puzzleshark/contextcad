@@ -5,12 +5,16 @@ from solids_workbench import SolidsWorkbench
 from shapes_workbench import ShapesWorkbench
 from lines_workbench import LinesWorkbench
 
+import typing as t
+
 
 class Context(abc.ABC):
 
-    def __init__(self, outer_context):
+    def __init__(self, outer_context: t.Union['Context', None], plane: Plane):
         self.outer_context = outer_context
         self.inner_context = None
+
+        self.plane = plane
 
         self.objects = []
         if self.outer_context is not None:
@@ -46,9 +50,8 @@ class Context(abc.ABC):
 
 class SolidsContext(Context):
 
-    def __init__(self, outer_context, plane=Plane.named("front")):
-        self.plane = plane
-        super().__init__(outer_context)
+    def __init__(self, outer_context, plane):
+        super().__init__(outer_context, plane)
     
     def workbench(self):
         return SolidsWorkbench(self)
@@ -57,20 +60,20 @@ class SolidsContext(Context):
 
 class ShapesContext(Context):
 
-    def __init__(self, outer_context):
-        super().__init__(outer_context)
+    def __init__(self, outer_context, plane):
+        super().__init__(outer_context, plane)
 
     def workbench(self):
         return ShapesWorkbench(self)
 
 class LinesContext(Context):
 
-    def __init__(self, outer_context):
-        super().__init__(outer_context)
+    def __init__(self, outer_context, plane):
+        super().__init__(outer_context, plane)
 
     def workbench(self):
         return LinesWorkbench(self)
 
 
 def solids_workbench(plane: str):
-    return SolidsContext(plane)
+    return SolidsContext(outer_context=None, plane=Plane.named(plane))
