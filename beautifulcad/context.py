@@ -7,19 +7,28 @@ import beautifulcad.solids as solids
 
 class Context:
 
-    context_stack = []
+    def __init__(self, outer_context):
+        self.outer_context = outer_context
+        self.inner_context = None
 
-    def __init__(self):
         self.objects = []
         if len(self.context_stack) > 0:
-            self.current().add(self)
+            outer_context.add(self)
 
     def __enter__(self):
-        self.context_stack.append(self)
+        self.outer_context.inner_context = self
         return self
 
     def __exit__(self, t, value, traceback):
-        self.context_stack.pop()
+        self.outer_context.inner_context = None
+
+    def current(self):
+        if self.outer_context is not None:
+            return self.outer_context.current()
+        elif self.inner_context is not None:
+                return self.inner_context.current()
+        else:
+            return self
     
     def add(self, shape):
         self.objects.append(shape)
@@ -37,7 +46,7 @@ class Context:
 
 
 
-class SolidsWorkbench(Context):
+class SolidsContext(Context):
 
     def __init__(self, plane=Plane.named("front")):
         self.plane = plane
@@ -48,12 +57,12 @@ class SolidsWorkbench(Context):
             return solids.Box(length, width, height)
 
 
-class ShapesWorkbench(Context):
+class ShapesContext(Context):
     pass
 
-class LinesWorkbench(Context):
+class LinesContext(Context):
     pass
 
 
 def solids_workbench(plane: str):
-    return SolidsWorkbench(plane)
+    return SolidsContext(plane)

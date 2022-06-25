@@ -50,13 +50,13 @@ class Solid:
         return jupyter_cadquery.Part(self._cq_shape).show()
 
 
-class Cylinder(Shape):
+class Cylinder(Solid):
 
     def __init__(self, radius, height):
         super().__init__(CQSolid.makeCylinder(radius, height))
 
 
-class Box(Shape):
+class Box(Solid):
 
     def __init__(self, l, w, h):
         super().__init__(CQSolid.makeBox(l, w, h))
