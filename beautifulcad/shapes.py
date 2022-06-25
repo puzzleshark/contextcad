@@ -9,9 +9,11 @@ from cadquery.occ_impl.shapes import Face as CQFace
 
 class Shape:
 
-    def __init__(self, cq_shape):
+    def __init__(self, cq_shape, moved=False):
         self.ctx = Context.current()
-        self._cq_shape = cq_shape.move(self.ctx.plane.location)
+        self._cq_shape = cq_shape
+        if not moved:
+            self._cq_shape = cq_shape.move(self.ctx.plane.location)
     
     def hole(self, diameter, depth):
 
@@ -23,7 +25,7 @@ class Shape:
 
         new_h = h.moved(Context.current().plane.location)
 
-        return Shape(self._cq_shape.cut(new_h).clean())
+        return Shape(self._cq_shape.cut(new_h).clean(), moved=True)
 
 
     def _ipython_display_(self):
