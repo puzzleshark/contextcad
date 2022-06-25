@@ -13,19 +13,19 @@ class Shape:
         self.ctx = Context.current()
         self._cq_shape = cq_shape
         if not moved:
-            self._cq_shape = cq_shape.move(self.ctx.plane.location)
+            cq_shape.move(self.ctx.plane.location)
     
     def hole(self, diameter):
 
         boreDir = Vector(0, 0, -1)
         # first make the hole
         h = CQSolid.makeCylinder(
-            diameter / 2.0, self._cq_shape.BoundingBox().DiagonalLength, Vector(), boreDir
+            diameter / 2., self._cq_shape.BoundingBox().DiagonalLength, Vector(), boreDir
         )  # local coordinates!
 
-        new_h = h.moved(Context.current().plane.location)
+        h.move(Context.current().plane.location)
 
-        return Shape(self._cq_shape.cut(new_h).clean(), moved=True)
+        return Shape(self._cq_shape.cut(h).clean(), moved=True)
 
 
     def _ipython_display_(self):
