@@ -10,8 +10,8 @@ from cadquery.occ_impl.shapes import Face as CQFace
 class Shape:
 
     def __init__(self, cq_shape):
-        self._cq_shape = cq_shape
         self.ctx = Context.current()
+        self._cq_shape = cq_shape.move(self.ctx.plane.location)
     
     def hole(self, diameter, depth):
 
@@ -23,7 +23,7 @@ class Shape:
 
         new_h = h.moved(Context.current().plane.location)
 
-        return Shape(self._box.cut(new_h).clean())
+        return Shape(self._cq_shape.cut(new_h).clean())
 
 
     def _ipython_display_(self):
@@ -33,16 +33,16 @@ class Shape:
 class Cylinder(Shape):
 
     def __init__(self, radius, height):
-        super().__init__(CQSolid.makeCylinder(radius, height).move(self.ctx.plane.location))
+        super().__init__(CQSolid.makeCylinder(radius, height))
 
 
 class Box(Shape):
 
     def __init__(self, l, w, h):
-        super().__init__(CQSolid.makeBox(l, w, h).move(self.ctx.plane.location))
+        super().__init__(CQSolid.makeBox(l, w, h))
     
     def faces(self):
-        return [Face(f) for f in self._box.Faces()]
+        return [Face(f) for f in self._cq_shape.Faces()]
 
 
 class Face:
