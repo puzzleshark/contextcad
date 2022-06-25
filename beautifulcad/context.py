@@ -35,12 +35,18 @@ class Context:
 
 
 
-class Coords(Context):
+class SolidsWorkbench(Context):
 
     def __init__(self, plane=Plane.named("front")):
         self.plane = plane
         super().__init__()
 
+
+class ShapesWorkbench(Context):
+    pass
+
+class LinesWorkbench(Context):
+    pass
 
 
 class PolyLine:
