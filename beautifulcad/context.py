@@ -1,8 +1,7 @@
-import cadquery as cq
-import jupyter_cadquery
 from cadquery import Plane
-
-import beautifulcad.solids as solids
+from solids_workbench import SolidsWorkbench
+from shapes_workbench import ShapesWorkbench
+from lines_workbench import LinesWorkbench
 
 
 class Context():
@@ -32,13 +31,6 @@ class Context():
     
     def add(self, shape):
         self.objects.append(shape)
-
-    
-    @classmethod
-    def current(cls):
-        if len(cls.context_stack) == 0:
-            raise ValueError("no beautifulcad context!")
-        return cls.context_stack[-1]
     
     def _ipython_display_(self):
         if len(self.objects) > 0:
@@ -52,8 +44,8 @@ class SolidsContext(Context):
         self.plane = plane
         super().__init__(outer_context)
     
-    def workbench():
-        return SolidsWorkbench()
+    def workbench(self):
+        return SolidsWorkbench(self)
 
 
 
@@ -61,6 +53,9 @@ class ShapesContext(Context):
 
     def __init__(self, outer_context):
         super().__init__(outer_context)
+
+    def workbench(self):
+        return ShapesWorkbench(self)
 
 class LinesContext(Context):
 
