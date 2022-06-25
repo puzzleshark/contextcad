@@ -32,7 +32,12 @@ class Box:
             diameter / 2.0, depth, Vector(), boreDir
         )  # local coordinates!
 
-        return self._box.cut(h)
+        new_h = h.moved(Context.current().plane.location)
+
+        # self._box.
+        # return h
+
+        return self._box.cut(new_h).clean()
     
     def _ipython_display_(self):
         return jupyter_cadquery.Part(self._box).show()
@@ -66,9 +71,9 @@ class Face:
         xDir = _computeXdir(normal)
 
 
-        # center = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(center))
-        # xDir = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(xDir))
-        # normal = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(normal))
+        center = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(center))
+        xDir = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(xDir))
+        normal = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(normal))
 
         plane = Plane(center, xDir, normal)
 
