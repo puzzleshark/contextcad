@@ -17,7 +17,7 @@ class Shape:
             cq_shape.move(self.ctx.plane.location)
         
 
-        self.ctx.add()
+        self.ctx.add(self)
     
     def hole(self, diameter):
 

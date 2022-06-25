@@ -17,7 +17,7 @@ class Context:
     def __exit__(self, t, value, traceback):
         self.context_stack.pop()
     
-    def add(shape):
+    def add(self, shape):
         self.objects.append(shape)
 
     
