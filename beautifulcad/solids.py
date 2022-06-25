@@ -11,26 +11,26 @@ import beautifulcad.context
 
 class Solid:
 
-    def __init__(self, cq_shape, ctx, moved=False):
+    def __init__(self, wraps, ctx, moved=False):
         self.ctx = ctx
-        self._cq_shape = cq_shape
+        self._wraps = wraps
         if not moved:
-            cq_shape.move(self.ctx.plane.location)
+            wraps.move(self.ctx.plane.location)
         
         wp = (
             cq.Workplane(self.ctx.plane)
-            .add(self._cq_shape)
+            .add(self._wraps)
         )
         self.ctx.add(wp)
     
     def faces(self, selector=None):
         wp = (
             cq.Workplane(self.ctx.current().plane)
-            .add(self._cq_shape)
+            .add(self._wraps)
             .faces(selector)
         )
         self.ctx.current().add(wp)
-        return [Face(f, self.ctx.current()) for f in wp.objects]
+        return [Face(f, self, self.ctx.current()) for f in wp.objects]
     
     def face(self, selector=None):
         faces = self.faces(selector)
@@ -40,16 +40,16 @@ class Solid:
     def edges(self, selector=None):
         wp = (
             cq.Workplane(self.ctx.current().plane)
-            .add(self._cq_shape)
+            .add(self._wraps)
             .edges(selector)
         )
         self.ctx.current().add(wp)
-        return [Edge(e, self.ctx.current()) for e in wp.objects]
+        return [Edge(e, self, self.ctx.current()) for e in wp.objects]
     
     def hole(self, diameter):
         wp = (
             cq.Workplane(self.ctx.current().plane)
-            .add(self._cq_shape)
+            .add(self._wraps)
             .hole(diameter)
         )
         self.ctx.current().add(wp)
@@ -70,15 +70,15 @@ class Box(Solid):
 
 class Edge:
 
-    def __init__(self, cq_edge, ctx):
+    def __init__(self, wraps, parent, ctx):
         self.ctx = ctx
-        self._edge = cq_edge
+        self._wraps = wraps
 
 class Vertex:
 
-    def __init__(self, cq_vertex, ctx):
+    def __init__(self, wraps, parent, ctx):
         self.ctx = ctx
-        self._vertex = cq_vertex
+        self._wraps = wraps
 
 
 class Face:
