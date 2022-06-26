@@ -12,23 +12,24 @@ import beautifulcad.context
 class Solid:
 
     def __init__(self, wraps, ctx):
-        self.ctx = ctx
+        self._ctx = ctx
         self._wraps = wraps
         
         wp = (
-            cq.Workplane(self.ctx.plane)
+            cq.Workplane(self._ctx.plane)
             .add(self._wraps)
         )
-        self.ctx.add(wp)
+        self._ctx.add(wp)
     
     def faces(self, selector=None):
+        new_context = self._ctx.current()
         wp = (
-            cq.Workplane(self.ctx.current().plane)
+            cq.Workplane(new_context.plane)
             .add(self._wraps)
             .faces(selector)
         )
-        self.ctx.current().add(wp)
-        return [Face(f, self, self.ctx.current()) for f in wp.objects]
+        new_context.add(wp)
+        return [Face(f, self, new_context) for f in wp.objects]
     
     def face(self, selector=None):
         faces = self.faces(selector)
@@ -37,37 +38,37 @@ class Solid:
 
     def edges(self, selector=None):
         wp = (
-            cq.Workplane(self.ctx.current().plane)
+            cq.Workplane(self._ctx.current().plane)
             .add(self._wraps)
             .edges(selector)
         )
-        self.ctx.current().add(wp)
-        return [Edge(e, self, self.ctx.current()) for e in wp.objects]
+        self._ctx.current().add(wp)
+        return [Edge(e, self, self._ctx.current()) for e in wp.objects]
     
     def hole(self, diameter):
         wp = (
-            cq.Workplane(self.ctx.current().plane)
+            cq.Workplane(self._ctx.current().plane)
             .add(self._wraps)
             .hole(diameter)
         )
-        self.ctx.current().add(wp)
+        self._ctx.current().add(wp)
         return wp.objects[0]
     
     def fillet(self, edges, radius):
         wp = (
-            cq.Workplane(self.ctx.current().plane)
+            cq.Workplane(self._ctx.current().plane)
             .add(self._wraps)
             .add([e._wraps for e in edges])
             .fillet(radius)
         )
-        self.ctx.current().add(wp)
+        self._ctx.current().add(wp)
         return wp.objects[0]
 
     def __add__(self, other):
-        return Solid(self._wraps.fuse(other._wraps), self.ctx.current())
+        return Solid(self._wraps.fuse(other._wraps), self._ctx.current())
     
     def __sub__(self, other):
-        return Solid(self._wraps.cut(other._wraps), self.ctx.current())
+        return Solid(self._wraps.cut(other._wraps), self._ctx.current())
 
 
 class Cylinder(Solid):
@@ -94,7 +95,7 @@ class Box(Solid):
 class Edge:
 
     def __init__(self, wraps, parent, ctx):
-        self.ctx = ctx
+        self._ctx = ctx
         self._wraps = wraps
 
 
@@ -104,29 +105,30 @@ class Edge:
 class Vertex:
 
     def __init__(self, wraps, parent, ctx):
-        self.ctx = ctx
+        self._ctx = ctx
         self._wraps = wraps
 
 
 class Face:
 
     def __init__(self, wraps, parent, ctx):
-        self.ctx = ctx
+        self._ctx = ctx
         self._wraps = wraps
 
 
     def edges(self, selector=None):
+        current = self._ctx.current()
         wp = (
-            cq.Workplane(self.ctx.current().plane)
+            cq.Workplane(current.plane)
             .add(self._wraps)
             .edges(selector)
         )
-        self.ctx.current().add(wp)
-        return [Edge(e, self, self.ctx.current()) for e in wp.objects]
+        self._ctx.current().add(wp)
+        return [Edge(e, self, current) for e in wp.objects]
 
     @property
     def plane(self):
-        new_context = self.ctx.current()
+        new_context = self._ctx.current()
         return (
             cq.Workplane(new_context.plane)
             .add(self._wraps)
@@ -135,7 +137,7 @@ class Face:
         )
     
     def solids_workbench(self):
-        return beautifulcad.context.SolidsContext(outer_context=self.ctx.current(), plane=self.plane)
+        return beautifulcad.context.SolidsContext(outer_context=self._ctx.current(), plane=self.plane)
     
     def shapes_workbench(self):
-        return beautifulcad.context.ShapesContext(outer_context=self.ctx.current(), plane=self.plane)
+        return beautifulcad.context.ShapesContext(outer_context=self._ctx.current(), plane=self.plane)
