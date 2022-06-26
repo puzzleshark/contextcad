@@ -52,9 +52,21 @@ class Solid:
         )
         self.ctx.current().add(wp)
         return wp.objects[0]
+    
+    def fillet(self, edges, radius):
+        wp = (
+            cq.Workplane(self.ctx.current().plane)
+            .add(self._wraps)
+            .add([e._wraps for e in edges])
+            .fillet(radius)
+        )
+        return wp.objects[0]
 
     def __add__(self, other):
         return Solid(self._wraps.fuse(other._wraps), self.ctx.current())
+    
+    def __sub__(self, other):
+        return Solid(self._wraps.cut(other._wraps), self.ctx.current())
 
 
 class Cylinder(Solid):

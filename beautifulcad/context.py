@@ -80,5 +80,5 @@ class LinesContext(Context):
         return LinesWorkbench(self)
 
 
-def solids_workbench(plane: str):
+def part(plane: str):
     return SolidsContext(outer_context=None, plane=Plane.named(plane))
