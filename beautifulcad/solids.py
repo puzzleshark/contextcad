@@ -11,11 +11,9 @@ import beautifulcad.context
 
 class Solid:
 
-    def __init__(self, wraps, ctx, moved=False):
+    def __init__(self, wraps, ctx):
         self.ctx = ctx
         self._wraps = wraps
-        # if not moved:
-            # wraps.move(self.ctx.plane.location)
         
         wp = (
             cq.Workplane(self.ctx.plane)
@@ -56,13 +54,18 @@ class Solid:
         return wp.objects[0]
 
     def __add__(self, other):
-        return Solid(self._wraps.fuse(other._wraps), self.ctx.current(), moved=True)
+        return Solid(self._wraps.fuse(other._wraps), self.ctx.current())
 
 
 class Cylinder(Solid):
 
-    def __init__(self, radius, height, ctx):
-        super().__init__(CQSolid.makeCylinder(radius, height), ctx)
+    def __init__(self, height, radius, ctx):
+        wp = (
+            cq.Workplane(ctx.current().plane)
+            .cylinder(height, radius)
+        )
+        super().__init__(wp.objects[0], ctx)
+        # super().__init__(CQSolid.makeCylinder(radius, height), ctx)
 
 
 class Box(Solid):
