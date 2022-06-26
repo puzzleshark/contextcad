@@ -97,15 +97,15 @@ class Vertex:
 
 class Face:
 
-    def __init__(self, cq_face, parent, ctx):
+    def __init__(self, wraps, parent, ctx):
         self.ctx = ctx
-        self._face = cq_face
+        self._wraps = wraps
 
 
     def edges(self, selector=None):
         wp = (
             cq.Workplane(self.ctx.current().plane)
-            .add(self._cq_shape)
+            .add(self._wraps)
             .edges(selector)
         )
         self.ctx.current().add(wp)
@@ -116,7 +116,7 @@ class Face:
         new_context = self.ctx.current()
         return (
             cq.Workplane(new_context.plane)
-            .add(self._face)
+            .add(self._wraps)
             .workplane(centerOption="CenterOfMass")
             .plane
         )
