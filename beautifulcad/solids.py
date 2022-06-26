@@ -60,6 +60,7 @@ class Solid:
             .add([e._wraps for e in edges])
             .fillet(radius)
         )
+        self.ctx.current().add(wp)
         return wp.objects[0]
 
     def __add__(self, other):
@@ -121,7 +122,7 @@ class Face:
             .edges(selector)
         )
         self.ctx.current().add(wp)
-        return [Edge(e, self.ctx.current()) for e in wp.objects]
+        return [Edge(e, self, self.ctx.current()) for e in wp.objects]
 
     @property
     def plane(self):
@@ -132,34 +133,9 @@ class Face:
             .workplane(centerOption="CenterOfMass")
             .plane
         )
-
-
-        # center = self._face.Center()
-        # normal = self._face.normalAt(center)
-
-        # def _computeXdir(normal):
-        #     """
-        #     Figures out the X direction based on the given normal.
-        #     :param :normal The direction that's normal to the plane.
-        #     :type :normal A Vector
-        #     :return A vector representing the X direction.
-        #     """
-        #     xd = Vector(0, 0, 1).cross(normal)
-        #     if xd.Length < 0.01:
-        #         # this face is parallel with the x-y plane, so choose x to be in global coordinates
-        #         xd = Vector(1, 0, 0)
-        #     return xd
-
-        # xDir = _computeXdir(normal)
-
-
-        # center = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(center))
-        # xDir = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(xDir))
-        # normal = new_context.plane.toLocalCoords(self.ctx.plane.toWorldCoords(normal))
-
-        # plane = Plane(center, xDir, normal)
-
-        # return plane
     
     def solids_workbench(self):
         return beautifulcad.context.SolidsContext(outer_context=self.ctx.current(), plane=self.plane)
+    
+    def shapes_workbench(self):
+        return beautifulcad.context.ShapesContext(outer_context=self.ctx.current(), plane=self.plane)
