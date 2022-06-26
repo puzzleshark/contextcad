@@ -22,14 +22,14 @@ class Solid:
         self._ctx.add(wp)
     
     def faces(self, selector=None):
-        new_context = self._ctx.current()
+        current = self._ctx.current()
         wp = (
-            cq.Workplane(new_context.plane)
+            cq.Workplane(current.plane)
             .add(self._wraps)
             .faces(selector)
         )
-        new_context.add(wp)
-        return [Face(f, self, new_context) for f in wp.objects]
+        current.add(wp)
+        return [Face(f, self, current) for f in wp.objects]
     
     def face(self, selector=None):
         faces = self.faces(selector)
@@ -37,32 +37,35 @@ class Solid:
         return faces[0]
 
     def edges(self, selector=None):
+        current = self._ctx.current()
         wp = (
-            cq.Workplane(self._ctx.current().plane)
+            cq.Workplane(current.plane)
             .add(self._wraps)
             .edges(selector)
         )
-        self._ctx.current().add(wp)
-        return [Edge(e, self, self._ctx.current()) for e in wp.objects]
+        current.add(wp)
+        return [Edge(e, self, current) for e in wp.objects]
     
     def hole(self, diameter):
+        current = self._ctx.current()
         wp = (
-            cq.Workplane(self._ctx.current().plane)
+            cq.Workplane(current.plane)
             .add(self._wraps)
             .hole(diameter)
         )
-        self._ctx.current().add(wp)
-        return wp.objects[0]
+        current.add(wp)
+        return Solid(wp.objects[0], current)
     
     def fillet(self, edges, radius):
+        current = self._ctx.current()
         wp = (
-            cq.Workplane(self._ctx.current().plane)
+            cq.Workplane(current.plane)
             .add(self._wraps)
             .add([e._wraps for e in edges])
             .fillet(radius)
         )
-        self._ctx.current().add(wp)
-        return wp.objects[0]
+        current.add(wp)
+        return Solid(wp.objects[0], current)
 
     def __add__(self, other):
         return Solid(self._wraps.fuse(other._wraps), self._ctx.current())
@@ -79,7 +82,6 @@ class Cylinder(Solid):
             .cylinder(height, radius)
         )
         super().__init__(wp.objects[0], ctx)
-        # super().__init__(CQSolid.makeCylinder(radius, height), ctx)
 
 
 class Box(Solid):
@@ -95,25 +97,26 @@ class Box(Solid):
 class Edge:
 
     def __init__(self, wraps, parent, ctx):
-        self._ctx = ctx
         self._wraps = wraps
+        self._parent = parent
+        self._ctx = ctx
 
 
-    # def solid_workbench(self):
-    #     return beautifulcad.context.SolidsContext(outer_context=self.ctx.current(), )
 
 class Vertex:
 
     def __init__(self, wraps, parent, ctx):
-        self._ctx = ctx
         self._wraps = wraps
+        self._parent = parent
+        self._ctx = ctx
 
 
 class Face:
 
     def __init__(self, wraps, parent, ctx):
-        self._ctx = ctx
         self._wraps = wraps
+        self._parent = parent
+        self._ctx = ctx
 
 
     def edges(self, selector=None):
