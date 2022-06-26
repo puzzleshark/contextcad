@@ -1,4 +1,5 @@
 import cadquery as cq
+from beautifulcad.solids import Solid
 
 
 
@@ -14,7 +15,20 @@ class Face:
         s = cq.Sketch()
         s._faces = combined
         self._ctx.current().add(s)
-        return Face(combined, self._ctx)
+        return Face(combined, self._ctx.current())
+
+    
+    def extrude(self, distance):
+        s = cq.Sketch()
+        s._faces = self._wraps
+        new_context = self._ctx.current()
+        wp = (
+            cq.Workplane(new_context.plane)
+            .placeSketch(s)
+            .extrude(distance)
+        )
+        self._ctx.current().add(s)
+        return Solid(wp.objects[0], new_context)
 
 class Circle(Face):
 
