@@ -14,8 +14,8 @@ class Solid:
     def __init__(self, wraps, ctx, moved=False):
         self.ctx = ctx
         self._wraps = wraps
-        if not moved:
-            wraps.move(self.ctx.plane.location)
+        # if not moved:
+            # wraps.move(self.ctx.plane.location)
         
         wp = (
             cq.Workplane(self.ctx.plane)
@@ -55,6 +55,9 @@ class Solid:
         self.ctx.current().add(wp)
         return wp.objects[0]
 
+    def __add__(self, other):
+        return Solid(self._wraps.fuse(other._wraps), self.ctx.current(), moved=True)
+
 
 class Cylinder(Solid):
 
@@ -65,7 +68,11 @@ class Cylinder(Solid):
 class Box(Solid):
 
     def __init__(self, l, w, h, ctx):
-        super().__init__(CQSolid.makeBox(l, w, h), ctx)
+        wp = (
+            cq.Workplane(ctx.current().plane)
+            .box(l, w, h)
+        )
+        super().__init__(wp.objects[0], ctx)
 
 
 class Edge:
@@ -73,6 +80,10 @@ class Edge:
     def __init__(self, wraps, parent, ctx):
         self.ctx = ctx
         self._wraps = wraps
+
+
+    # def solid_workbench(self):
+    #     return beautifulcad.context.SolidsContext(outer_context=self.ctx.current(), )
 
 class Vertex:
 
@@ -83,7 +94,7 @@ class Vertex:
 
 class Face:
 
-    def __init__(self, cq_face: CQFace, ctx):
+    def __init__(self, cq_face, parent, ctx):
         self.ctx = ctx
         self._face = cq_face
 
@@ -103,7 +114,7 @@ class Face:
         return (
             cq.Workplane(new_context.plane)
             .add(self._face)
-            .workplane()
+            .workplane(centerOption="CenterOfMass")
             .plane
         )
 

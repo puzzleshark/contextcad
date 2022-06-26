@@ -14,6 +14,7 @@ class Context(abc.ABC):
     def __init__(self, outer_context: t.Union['Context', None], plane: Plane):
         self.outer_context = outer_context
         self.inner_context = None
+        self.active = False
 
         self.plane = plane
 
@@ -26,21 +27,22 @@ class Context(abc.ABC):
         pass
 
     def __enter__(self):
+        self.active = True
         if self.outer_context is not None:
             self.outer_context.inner_context = self
         return self.workbench()
 
     def __exit__(self, t, value, traceback):
+        self.active = False
         if self.outer_context is not None:
             self.outer_context.inner_context = None
 
     def current(self):
-        if self.outer_context is not None:
-            return self.outer_context.current()
-        elif self.inner_context is not None:
-                return self.inner_context.current()
-        else:
-            return self
+        if self.active:
+            if self.inner_context is None:
+                return self
+            return self.inner_context.current()
+        return self.outer_context.current()
     
     def add(self, shape):
         self.objects.append(shape)
