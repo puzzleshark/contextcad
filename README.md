@@ -2,9 +2,9 @@
 
 
 ```python
-import beautifulcad as bc
+import contextcad
 
-with bc.Plane("front"):
+with contextcad.part("front"):
     box = bv.Box(5, 5, 5)
     top = box.faces(">Z")
     with bc.Plane(top):
