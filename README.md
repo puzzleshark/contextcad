@@ -42,7 +42,7 @@ with bench.solids_workbench() as bench:
     # some stuff here
 ```
 
-It provides methods like `bench.box()`, `bench.sphere`, additionally faces can only be extruded in this context.
+It provides methods like `bench.box()`, `bench.sphere()`, additionally faces can only be extruded in this context.
 ### `shapes_workbench`
 
 The shapes workbench is activated from the current "bench" via
