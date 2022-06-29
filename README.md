@@ -16,3 +16,12 @@ with contextcad.part("front") as bench:
 
 
 ```
+
+# Contexts
+
+There are different contexts which supply different APIs.
+
+* solids_workbench
+* shapes_workbench
+* lines_workbench
+* assembly_workbench (to-do)
