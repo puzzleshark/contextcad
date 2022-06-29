@@ -55,7 +55,7 @@ with bench.shapes_workbench() as bench:
     # some stuff here
 ```
 
-It provides methods like `bench.circle(), `bench.rect()`, additionally lines/wires must be "closed" in this context.
+It provides methods like `bench.circle()`, `bench.rect()`, additionally lines/wires must be "closed" in this context.
 ### `lines_workbench`
 
 ### `assembly_workbench` (to-do)
