@@ -95,5 +95,6 @@ with contextcad.solids_workbench("front") as bench:
     box = bench.box(5, 5, 5)
     box_with_spheres = box
     for face in box.faces():
-        box_with_spheres += bench.sphere(1)
+        with face.solids_workplane():
+            box_with_spheres += bench.sphere(1)
 ```
