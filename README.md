@@ -36,7 +36,7 @@ In this case the magical context only manages the view you see in your cad gui w
 There are different contexts which supply different APIs.
 
 ### `solids_workbench`
-Then solids workbench is activated from the current "bench" via 
+The solids workbench is activated from the current "bench" via 
 ```
 with bench.solids_workbench() as bench:
     # some stuff here
