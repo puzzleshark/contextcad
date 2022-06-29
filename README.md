@@ -3,6 +3,13 @@
 Experimental front end for cadquery.
 
 The idea here is the api is a roughly a "direct" api. Meaning when it comes to building an object, that is composed of sub-objects those objects must be explicity referenced and joined. Additionally every object is immutible.
+
+i.e (to define a union of two solids)
+```
+new_shape = a_shape + some_other_shape
+```
+(`a_shape` and `some_other_shape` remain unchanged)
+
 In this case the magical context only manages the view you see in your cad gui window, and also manages your coordinate system.
 
 
