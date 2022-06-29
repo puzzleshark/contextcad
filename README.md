@@ -7,11 +7,21 @@ import contextcad
 
 with contextcad.part("front") as bench:
     box = bench.box(5, 5, 5)
-    top = box.faces(">Z")
+    top = box.face(">Z")
     with top.solids_workbench():
         box_with_hole = box.hole(1)
+```
 
+would be analogous to
 
+```
+import cadquery as cq
+box_with_hole = (
+    cq.Workplane("front")
+    .box(5, 5, 5)
+    .faces(">Z)
+    .hole(1)
+)
 ```
 
 ## Introduction
