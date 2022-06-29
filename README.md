@@ -2,7 +2,7 @@
 
 Experimental front end for cadquery.
 
-The idea here is the api is a "direct" api. Meaning there is no hidden context. In this case the magical context only manages the view you see in your cad gui window, and also manages your coordinate system.
+The idea here is the api is a roughly a "direct" api. Meaning when it comes to building the object. In this case the magical context only manages the view you see in your cad gui window, and also manages your coordinate system.
 
 
 ```python
