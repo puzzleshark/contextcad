@@ -47,7 +47,7 @@ There are different contexts which supply different APIs.
 ### `solids_workbench`
 The solids workbench is activated from the current "bench" via 
 ```
-with bench.solids_workbench() as bench:
+with bench.solids_workbench(new_plane) as bench:
     # some stuff here
 ```
 
@@ -61,7 +61,7 @@ In general it is the context to work with solids.
 The shapes workbench is activated from the current "bench" via
 
 ```
-with bench.shapes_workbench() as bench:
+with bench.shapes_workbench(new_plane) as bench:
     # some stuff here
 ```
 
