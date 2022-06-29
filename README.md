@@ -14,7 +14,7 @@ with contextcad.part("front") as bench:
 
 would be analogous to
 
-```
+```python
 import cadquery as cq
 box_with_hole = (
     cq.Workplane("front")
