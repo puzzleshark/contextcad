@@ -58,5 +58,7 @@ with bench.shapes_workbench() as bench:
 * Provides methods like `bench.circle()`, `bench.rect()`
 * lines/wires must be "closed" in this context
 ### `lines_workbench`
+haven't quite figured this out but the idea here is this is where you do constraint based sketching
 
 ### `assembly_workbench` (to-do)
+where you create assemblies
