@@ -4,7 +4,7 @@
 
 Experimental front end for cadquery.
 
-The idea here is the api is a roughly a "direct" api. Meaning when it comes to building an object, that is composed of sub-objects those objects must be explicity referenced. Additionally every object is immutible.
+The idea here is the api is a roughly a "direct" api. Meaning when it comes to building an object that is composed of sub-objects, those objects must be explicity referenced. Additionally every object is immutible.
 
 ***i.e*** *(to define a union of two solids)*
 ```
