@@ -25,10 +25,9 @@ new_shape = a_shape + some_other_shape
 (`a_shape` and `some_other_shape` remain unchanged)
 
 The difference between this and a pure "direct" API, is that:
-1. There are different contexts (workbenches) which manage different tools you have access to
+1. There are different contexts (workbenches) which manage different tools you have access to.
 2. These context's also live in different coordinate systems.
-3. These contexts manage the GUI CAD view.
-In this case the magical context only manages the view you see in your cad gui window, and also manages your coordinate system.
+3. These contexts automatically manage the GUI CAD view.
 
 
 ## Contexts
