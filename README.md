@@ -44,7 +44,7 @@ with bench.solids_workbench() as bench:
 In general it is the context to work with solids.
 
 * Provides methods like `bench.box()`, `bench.sphere()`
-* Solids are only allowed to be union'd, insected, etc...
+* Solids are only allowed to be union'd, insected, etc... in this context
 * Shapes are only allowed to be extruded in this context
 ### `shapes_workbench`
 
