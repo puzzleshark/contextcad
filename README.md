@@ -1,5 +1,17 @@
 # Context Cad
 
+```python
+import contextcad
+
+with contextcad.part("front") as bench:
+    box = bench.box(5, 5, 5)
+    top = box.faces(">Z")
+    with top.solids_workbench():
+        box_with_hole = box.hole(1)
+
+
+```
+
 ## Introduction
 
 Experimental front end for cadquery.
@@ -18,18 +30,6 @@ The difference between this and a pure "direct" API, is that:
 3. These contexts manage the GUI CAD view.
 In this case the magical context only manages the view you see in your cad gui window, and also manages your coordinate system.
 
-
-```python
-import contextcad
-
-with contextcad.part("front") as bench:
-    box = bench.box(5, 5, 5)
-    top = box.faces(">Z")
-    with top.solids_workbench():
-        box_with_hole = box.hole(1)
-
-
-```
 
 ## Contexts
 
