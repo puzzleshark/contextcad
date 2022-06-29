@@ -4,11 +4,11 @@
 ```python
 import contextcad
 
-with contextcad.part("front"):
-    box = bv.Box(5, 5, 5)
+with contextcad.part("front") as bench:
+    box = bench.box(5, 5, 5)
     top = box.faces(">Z")
-    with bc.Plane(top):
-        box -= bc.hole(5)
+    with top.solids_workbench():
+        box_with_hole = box.hole(1)
 
 
 ```
