@@ -62,3 +62,28 @@ haven't quite figured this out but the idea here is this is where you do constra
 
 ### `assembly_workbench` (to-do)
 where you create assemblies
+
+## Control Flow
+In cadquery you can have multiple veritices/edges/faces selected and create objects at each point simoltaniously
+i.e
+```python
+import cadquery as cq
+
+box_with_spheres_on_faces = (
+    cq.Workplane("front")
+    .box(5, 5, 5)
+    .faces()
+    .sphere(1)
+)
+```
+
+To reduce complexity, in contextcad this would instead be done with a for loop. Something like
+```python
+import contextcad
+
+with contextcad.solids_workbench("front") as bench:
+    box = bench.box(5, 5, 5)
+    box_with_spheres = box
+    for face in box.faces():
+        box_with_spheres += bench.sphere(1)
+```
