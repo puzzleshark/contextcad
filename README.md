@@ -35,6 +35,18 @@ Then solids workbench is activated from the current "bench" via
 with bench.solids_workbench() as bench:
     # some stuff here
 ```
+
+It provides methods like `bench.box()`, `bench.sphere`, additionally faces can only be extruded in this context.
 ## `shapes_workbench`
+
+The shapes workbench is activated from the current "bench" via
+
+```
+with bench.shapes_workbench() as bench:
+    # some stuff here
+```
+
+It provides methods like `bench.circle(), `bench.rect()`, additionally lines/wires must be "closed" in this context.
 ## `lines_workbench`
+
 ## `assembly_workbench` (to-do)
