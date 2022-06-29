@@ -29,7 +29,12 @@ with contextcad.part("front") as bench:
 
 There are different contexts which supply different APIs.
 
-* `solids_workbench`
-* `shapes_workbench`
-* `lines_workbench`
-* `assembly_workbench` (to-do)
+## `solids_workbench`
+Then solids workbench is activated from the current "bench" via 
+```
+with bench.solids_workbench() as bench:
+    # some stuff here
+```
+## `shapes_workbench`
+## `lines_workbench`
+## `assembly_workbench` (to-do)
