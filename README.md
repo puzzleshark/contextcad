@@ -41,7 +41,11 @@ with bench.solids_workbench() as bench:
     # some stuff here
 ```
 
-It provides methods like `bench.box()`, `bench.sphere()`, additionally shapes are only allowed to be extruded in this context.
+In general it is the context to work with solids.
+
+* Provides methods like `bench.box()`, `bench.sphere()`
+* Solids are only allowed to be union'd, insected, etc...
+* Shapes are only allowed to be extruded in this context
 ### `shapes_workbench`
 
 The shapes workbench is activated from the current "bench" via
