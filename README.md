@@ -5,7 +5,7 @@ Experimental front end for cadquery.
 ```python
 import contextcad
 
-with contextcad.part("front") as bench:
+with contextcad.solids_workbench("front") as bench:
     box = bench.box(5, 5, 5)
     top = box.face(">Z")
     with top.solids_workbench():
