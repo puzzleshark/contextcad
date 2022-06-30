@@ -19,7 +19,7 @@ class Solid:
             cq.Workplane(self._ctx.plane)
             .add(self._wraps)
         )
-        self._ctx.add(wp)
+        self._ctx.set_for_display(wp)
     
     def faces(self, selector=None):
         current = self._ctx.current()
@@ -28,7 +28,7 @@ class Solid:
             .add(self._wraps)
             .faces(selector)
         )
-        current.add(wp)
+        current.set_for_display(wp)
         return [Face(f, self, current) for f in wp.objects]
     
     def face(self, selector=None):
@@ -43,7 +43,7 @@ class Solid:
             .add(self._wraps)
             .edges(selector)
         )
-        current.add(wp)
+        current.set_for_display(wp)
         return [Edge(e, self, current) for e in wp.objects]
     
     def hole(self, diameter):
@@ -53,7 +53,7 @@ class Solid:
             .add(self._wraps)
             .hole(diameter)
         )
-        current.add(wp)
+        current.set_for_display(wp)
         return Solid(wp.objects[0], current)
     
     def fillet(self, edges, radius):
@@ -64,7 +64,7 @@ class Solid:
             .add([e._wraps for e in edges])
             .fillet(radius)
         )
-        current.add(wp)
+        current.set_for_display(wp)
         return Solid(wp.objects[0], current)
 
     def __add__(self, other):

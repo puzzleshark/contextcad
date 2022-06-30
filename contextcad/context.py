@@ -20,7 +20,7 @@ class Context(abc.ABC):
 
         self.objects = []
         if self.outer_context is not None:
-            outer_context.add(self)
+            outer_context.set_for_display(self)
 
     @abc.abstractmethod
     def workbench(self):
@@ -44,7 +44,7 @@ class Context(abc.ABC):
             return self.inner_context.current()
         return self.outer_context.current()
     
-    def add(self, shape):
+    def set_for_display(self, shape):
         self.objects.append(shape)
     
     def _ipython_display_(self):

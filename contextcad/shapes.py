@@ -14,7 +14,7 @@ class Face:
         combined = self._wraps.fuse(other._wraps)
         s = cq.Sketch()
         s._faces = combined
-        self._ctx.current().add(s)
+        self._ctx.current().set_for_display(s)
         return Face(combined, self._ctx.current())
 
     
@@ -27,7 +27,7 @@ class Face:
             .placeSketch(s)
             .extrude(distance)
         )
-        self._ctx.current().add(s)
+        self._ctx.current().set_for_display(s)
         return Solid(wp.objects[0], new_context)
 
 class Circle(Face):
@@ -37,7 +37,7 @@ class Circle(Face):
             cq.Sketch()
             .circle(radius)
         )
-        ctx.current().add(s)
+        ctx.current().set_for_display(s)
         super().__init__(s._faces, ctx)
 
 
@@ -48,5 +48,5 @@ class Rect(Face):
             cq.Sketch()
             .rect(width, height)
         )
-        ctx.current().add(s)
+        ctx.current().set_for_display(s)
         super().__init__(s._faces, ctx)
