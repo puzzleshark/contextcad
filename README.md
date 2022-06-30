@@ -5,11 +5,12 @@ Experimental front end for cadquery.
 ```python
 import contextcad
 
-with contextcad.solids_workbench("front") as bench:
-    box = bench.box(5, 5, 5)
-    top = box.face(">Z")
-    with top.solids_workbench():
-        box_with_hole = box.hole(1)
+with contextcad.workbench() as bench:
+    with bench.build3d() as b:
+        box = bench.box(5, 5, 5)
+        top = box.face(">Z")
+        with top.build3d():
+            box_with_hole = box.hole(1)
 ```
 
 would be analogous to
@@ -91,10 +92,11 @@ To reduce complexity, in contextcad this would instead be done with a for loop. 
 ```python
 import contextcad
 
-with contextcad.solids_workbench("front") as bench:
-    box = bench.box(5, 5, 5)
-    box_with_spheres = box
-    for face in box.faces():
-        with face.solids_workplane(): # plane is automatically set to the face's plane
-            box_with_spheres += bench.sphere(1)
+with contextcad.workbench() as bench:
+    with bench.build3d() as b:
+        box = b.box(5, 5, 5)
+        box_with_spheres = box
+        for face in box.faces():
+            with face.build3d() as b:  # plane is automatically set to the face's plane
+                box_with_spheres += bench.sphere(1)
 ```
