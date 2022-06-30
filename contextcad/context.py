@@ -2,9 +2,7 @@ import abc
 
 from cadquery import Plane
 
-from contextcad.solids_workbench import SolidsWorkbench
-from contextcad.shapes_workbench import ShapesWorkbench
-from contextcad.lines_workbench import LinesWorkbench
+from contextcad.workbenches import BaseWorkbench, SolidsWorkbench, ShapesWorkbench, LinesWorkbench
 
 import typing as t
 
@@ -80,5 +78,12 @@ class LinesContext(Context):
         return LinesWorkbench(self)
 
 
-def solids_workplane(plane: str):
-    return SolidsContext(outer_context=None, plane=Plane.named(plane))
+
+class BaseContext(Context):
+
+    def build_solids():
+        return BaseWorkbench(self)
+
+
+def workbench():
+    return BaseContext(outer_context=None, plane=Plane.named("front"))

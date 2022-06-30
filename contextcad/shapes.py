@@ -17,7 +17,7 @@ class Face:
         self._ctx.current().set_for_display(s)
         return Face(combined, self._ctx.current())
 
-    
+ 
     def extrude(self, distance):
         s = cq.Sketch()
         s._faces = self._wraps
@@ -29,6 +29,7 @@ class Face:
         )
         self._ctx.current().set_for_display(s)
         return Solid(wp.objects[0], new_context)
+
 
 class Circle(Face):
 

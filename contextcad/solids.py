@@ -139,8 +139,8 @@ class Face:
             .plane
         )
     
-    def solids_workbench(self):
+    def build3d(self):
         return contextcad.context.SolidsContext(outer_context=self._ctx.current(), plane=self.plane)
     
-    def shapes_workbench(self):
+    def build2d(self):
         return contextcad.context.ShapesContext(outer_context=self._ctx.current(), plane=self.plane)
