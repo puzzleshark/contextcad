@@ -2,9 +2,9 @@ import abc
 
 from cadquery import Plane
 
-from beautifulcad.solids_workbench import SolidsWorkbench
-from beautifulcad.shapes_workbench import ShapesWorkbench
-from beautifulcad.lines_workbench import LinesWorkbench
+from contextcad.solids_workbench import SolidsWorkbench
+from contextcad.shapes_workbench import ShapesWorkbench
+from contextcad.lines_workbench import LinesWorkbench
 
 import typing as t
 
@@ -80,5 +80,5 @@ class LinesContext(Context):
         return LinesWorkbench(self)
 
 
-def part(plane: str):
+def solids_workplane(plane: str):
     return SolidsContext(outer_context=None, plane=Plane.named(plane))

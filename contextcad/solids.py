@@ -5,7 +5,7 @@ from cadquery.occ_impl.shapes import Solid as CQSolid
 from cadquery.occ_impl.shapes import Face as CQFace
 import cadquery as cq
 
-import beautifulcad.context
+import contextcad.context
 
 
 
@@ -140,7 +140,7 @@ class Face:
         )
     
     def solids_workbench(self):
-        return beautifulcad.context.SolidsContext(outer_context=self._ctx.current(), plane=self.plane)
+        return contextcad.context.SolidsContext(outer_context=self._ctx.current(), plane=self.plane)
     
     def shapes_workbench(self):
-        return beautifulcad.context.ShapesContext(outer_context=self._ctx.current(), plane=self.plane)
+        return contextcad.context.ShapesContext(outer_context=self._ctx.current(), plane=self.plane)

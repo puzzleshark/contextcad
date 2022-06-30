@@ -1,4 +1,4 @@
-import beautifulcad.solids
+import contextcad.solids
 
 class SolidsWorkbench():
 
@@ -6,7 +6,7 @@ class SolidsWorkbench():
         self._ctx = ctx
 
     def box(self, length, width, height):
-            return beautifulcad.solids.Box(length, width, height, self._ctx)
+            return contextcad.solids.Box(length, width, height, self._ctx)
     
     def _ipython_display_(self):
         return self._ctx._ipython_display_()

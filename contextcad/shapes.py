@@ -1,5 +1,5 @@
 import cadquery as cq
-from beautifulcad.solids import Solid
+from contextcad.solids import Solid
 
 
 

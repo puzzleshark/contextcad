@@ -1,4 +1,4 @@
 .idea/
 .vscode/
-ipybn_checkpoints/
-beautifulcad/__pycache__/
+ipynb_checkpoints/
+contextcad/__pycache__/

@@ -1,5 +1,5 @@
 
-from beautifulcad.shapes import Circle, Rect
+from contextcad.shapes import Circle, Rect
 
 
 class ShapesWorkbench():
