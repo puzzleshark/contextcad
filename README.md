@@ -36,7 +36,7 @@ new_shape = a_shape + some_other_shape
 (`a_shape` and `some_other_shape` remain unchanged)
 
 The difference between this and a pure "direct" API, is that:
-1. There are different contexts (workbenches) which manage different tools you have access to.
+1. There are different contexts which manage different tools you have access to.
 2. Each context lives on a plane, which sets the local coordinate system.
 3. These contexts automatically manage the GUI CAD view.
 
@@ -45,28 +45,28 @@ The difference between this and a pure "direct" API, is that:
 
 There are different contexts which supply different APIs.
 
-### `solids_workbench`
-The solids workbench is activated from the current "bench" via 
+### `build3d`
+The build3d context is activated from the current context via 
 ```
-with bench.solids_workbench(new_plane) as bench:
+with c.build3d() as c:
     # some stuff here
 ```
 
 In general it is the context to work with solids.
 
-* Provides methods like `bench.box()`, `bench.sphere()`
+* Provides methods like `c.box()`, `c.sphere()`
 * Solids are only allowed to be union'd, insected, etc... in this context
 * Shapes are only allowed to be extruded in this context
-### `shapes_workbench`
+### `build2d`
 
-The shapes workbench is activated from the current "bench" via
+The shapes workbench is activated from the current context via
 
 ```
-with bench.shapes_workbench(new_plane) as bench:
+with c.build2d() as c:
     # some stuff here
 ```
 
-* Provides methods like `bench.circle()`, `bench.rect()`
+* Provides methods like `c.circle()`, `c.rect()`
 * lines/wires must be "closed" in this context
 ### `lines_workbench`
 haven't quite figured this out but the idea here is this is where you do constraint based sketching
