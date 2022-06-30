@@ -1,6 +1,17 @@
 import contextcad.solids
 
-class SolidsWorkbench():
+
+
+class Moving:
+
+    def translate_3d(x: float, y: float, z: float):
+        pass
+
+    def translate_2d(x: float, y: float):
+        pass
+
+
+class SolidsWorkbench:
 
     def __init__(self, ctx):
         self._ctx = ctx
