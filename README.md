@@ -27,7 +27,7 @@ box_with_hole = (
 
 ## Introduction
 
-The idea here is the api is a roughly a "direct" api. Meaning when it comes to building an object that is composed of sub-objects, those sub-objects must be explicity referenced. Additionally every object is **immutable**.
+The idea here is the api is a roughly a *"direct"* api. Meaning when it comes to building an object that is composed of sub-objects, those sub-objects must be explicity referenced. Additionally every object is **immutable**.
 
 ***i.e***  *(to define a union of two solids)*
 ```python
