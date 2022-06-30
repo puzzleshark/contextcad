@@ -81,7 +81,7 @@ class LinesContext(Context):
 
 class BaseContext(Context):
 
-    def build_solids():
+    def workbench(self):
         return BaseWorkbench(self)
 
 

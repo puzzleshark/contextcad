@@ -22,13 +22,16 @@ class BaseWorkbench:
         self._ctx = ctx
 
     def build3d(self):
-        return contextcad.context.SolidsContext(Plane.named("front"))
+        return contextcad.context.SolidsContext(self._ctx, Plane.named("front"))
     
     def build2d(self):
-        return contextcad.context.ShapesContext(Plane.named("front"))
+        return contextcad.context.ShapesContext(self._ctx, Plane.named("front"))
     
     def build1d(self):
-        return contextcad.context.LinesContext(Plane.named("front"))
+        return contextcad.context.LinesContext(self._ctx, Plane.named("front"))
+
+    def _ipython_display_(self):
+        return self._ctx._ipython_display_()
 
 
 
