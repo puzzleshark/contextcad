@@ -74,7 +74,7 @@ haven't quite figured this out but the idea here is this is where you do constra
 where you create assemblies
 
 ## Control Flow
-In cadquery you can have multiple veritices/edges/faces selected and create objects at each point simoltaniously
+In cadquery you can have multiple veritices/edges/faces selected and create objects at each point simultaneously
 i.e
 ```python
 import cadquery as cq
