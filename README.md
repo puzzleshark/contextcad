@@ -27,7 +27,7 @@ box_with_hole = (
 
 ## Introduction
 
-The idea here is the api is a roughly a "direct" api. Meaning when it comes to building an object that is composed of sub-objects, those objects must be explicity referenced. Additionally every object is immutible.
+The idea here is the api is a roughly a "direct" api. Meaning when it comes to building an object that is composed of sub-objects, those sub-objects must be explicity referenced. Additionally every object is **immutable**.
 
 ***i.e***  *(to define a union of two solids)*
 ```python
@@ -37,7 +37,7 @@ new_shape = a_shape + some_other_shape
 
 The difference between this and a pure "direct" API, is that:
 1. There are different contexts (workbenches) which manage different tools you have access to.
-2. These context's also live in different coordinate systems.
+2. Each context lives on a plane, which sets the local coordinate system.
 3. These contexts automatically manage the GUI CAD view.
 
 
@@ -75,7 +75,7 @@ haven't quite figured this out but the idea here is this is where you do constra
 where you create assemblies
 
 ## Control Flow
-In cadquery you can have multiple veritices/edges/faces selected and create objects at each point simoltaniously
+In cadquery you can have multiple veritices/edges/faces selected and create objects at each point simultaneously
 i.e
 ```python
 import cadquery as cq
