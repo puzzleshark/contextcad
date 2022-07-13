@@ -2,3 +2,4 @@
 .vscode/
 ipynb_checkpoints/
 contextcad/__pycache__/
+contextcad.egg-info/
