@@ -9,6 +9,8 @@ import typing as t
 
 class Context(abc.ABC):
 
+    stack = []
+
     def __init__(self, outer_context: t.Union['Context', None], plane: Plane):
         self.outer_context = outer_context
         self.inner_context = None
@@ -25,12 +27,14 @@ class Context(abc.ABC):
         pass
 
     def __enter__(self):
+        self.stack.append(self)
         self.active = True
         if self.outer_context is not None:
             self.outer_context.inner_context = self
         return self.workbench()
 
     def __exit__(self, t, value, traceback):
+        self.stack.pop()
         self.active = False
         if self.outer_context is not None:
             self.outer_context.inner_context = None
@@ -48,6 +52,15 @@ class Context(abc.ABC):
     def _ipython_display_(self):
         if len(self.objects) > 0:
             return self.objects[-1]._ipython_display_()
+    
+    def _get_description(self):
+        from jupyter_cadquery.utils import numpy_to_json
+        from jupyter_cadquery.cad_objects import to_assembly
+        from jupyter_cadquery.base import _tessellate_group
+
+        # global json_result
+        json_result = numpy_to_json(_tessellate_group(to_assembly(self.objects[-1])))
+        return json_result
 
 
 
