@@ -54,13 +54,16 @@ class Context(abc.ABC):
             return self.objects[-1]._ipython_display_()
     
     def _get_description(self):
-        from jupyter_cadquery.utils import numpy_to_json
-        from jupyter_cadquery.cad_objects import to_assembly
-        from jupyter_cadquery.base import _tessellate_group
+        if len(self.objects) > 0:
+            if isinstance(self.objects[-1], Context):
+                return self.objects[-1]._get_description()
+            from jupyter_cadquery.utils import numpy_to_json
+            from jupyter_cadquery.cad_objects import to_assembly
+            from jupyter_cadquery.base import _tessellate_group
 
-        # global json_result
-        json_result = numpy_to_json(_tessellate_group(to_assembly(self.objects[-1])))
-        return json_result
+            # global json_result
+            json_result = numpy_to_json(_tessellate_group(to_assembly(self.objects[-1])))
+            return json_result
 
 
 
