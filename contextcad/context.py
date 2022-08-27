@@ -22,16 +22,11 @@ class Context(abc.ABC):
         if self.outer_context is not None:
             outer_context.set_for_display(self)
 
-    @abc.abstractmethod
-    def workbench(self):
-        pass
-
     def __enter__(self):
         self.stack.append(self)
         self.active = True
         if self.outer_context is not None:
             self.outer_context.inner_context = self
-        return self.workbench()
 
     def __exit__(self, t, value, traceback):
         self.stack.pop()
@@ -72,9 +67,10 @@ class SolidsContext(Context):
     def __init__(self, outer_context, plane):
         super().__init__(outer_context, plane)
     
-    def workbench(self):
-        return SolidsWorkbench(self)
 
+    def __enter__(self):
+        super().__enter__()
+        return SolidsWorkbench(self)
 
 
 class ShapesContext(Context):
@@ -82,8 +78,10 @@ class ShapesContext(Context):
     def __init__(self, outer_context, plane):
         super().__init__(outer_context, plane)
 
-    def workbench(self):
+    def __enter__(self):
+        super().__enter__()
         return ShapesWorkbench(self)
+
 
 class LinesContext(Context):
 
@@ -91,15 +89,18 @@ class LinesContext(Context):
         super().__init__(outer_context, plane)
 
     def workbench(self):
+        super().__enter__()
         return LinesWorkbench(self)
-
 
 
 class BaseContext(Context):
 
-    def workbench(self):
+    # def workbench(self):
+    #     return BaseWorkbench(self)
+    def __enter__(self):
+        super().__enter__()
         return BaseWorkbench(self)
 
 
-def workbench():
+def build():
     return BaseContext(outer_context=None, plane=Plane.named("front"))
