@@ -1,5 +1,6 @@
 import cadquery as cq
 from contextcad.solids import Solid
+# from contextcad.workbenches import allow_in_solids_context
 
 
 
@@ -17,7 +18,7 @@ class Face:
         self._ctx.current().set_for_display(s)
         return Face(combined, self._ctx.current())
 
- 
+#   @allow_in_solids_context
     def extrude(self, distance):
         s = cq.Sketch()
         s._faces = self._wraps

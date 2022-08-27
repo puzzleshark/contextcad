@@ -100,3 +100,15 @@ with contextcad.workbench() as bench:
             with face.build3d() as b:  # plane is automatically set to the face's plane
                 box_with_spheres += bench.sphere(1)
 ```
+
+```python
+with build1d() as ctx:
+    l = ctx.start(0, 0).line(5, 0)
+    l += l.angle(90).line(5)
+```
+
+```python
+with build1d() as ctx:
+    ctx.line(0,3).angle(30).go().until(4)
+    ctx.go().parallel_to().go().until(4)
+```

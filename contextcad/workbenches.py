@@ -16,6 +16,32 @@ def active(fn):
     return wrapper
 
 
+def allow_in_solids_context(fn):
+    @functools.wraps(fn)
+    def wrapper(self, *args, **kwargs):
+        if not isinstance(self._ctx.current(), contextcad.context.SolidsContext):
+            raise ValueError(f"{fn.__name__} is only allowed in the build3d context.")
+        return fn(self, *args, **kwargs)
+    return wrapper
+
+
+def allow_in_shapes_context(fn):
+    @functools.wraps(fn)
+    def wrapper(self, *args, **kwargs):
+        if not isinstance(self._ctx.current(), contextcad.context.ShapesContext):
+            raise ValueError(f"{fn.__name__} is only allowed in the build2d context.")
+        return fn(self, *args, **kwargs)
+    return wrapper
+
+
+def allow_in_lines_context(fn):
+    @functools.wraps(fn)
+    def wrapper(self, *args, **kwargs):
+        if not isinstance(self._ctx.current(), contextcad.context.LinesContext):
+            raise ValueError(f"{fn.__name__} is only allowed in the build1d context.")
+        return fn(self, *args, **kwargs)
+    return wrapper
+
 # class PlaneMovement2d:
 
 #     def translate_3d(x: float, y: float, z: float):
@@ -83,7 +109,6 @@ class LinesWorkbench():
 
     def __init__(self, ctx):
         self.ctx = ctx
-
 
     # lines
     
