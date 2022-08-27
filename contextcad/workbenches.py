@@ -108,18 +108,10 @@ class ShapesWorkbench:
 class LinesWorkbench():
 
     def __init__(self, ctx):
-        self.ctx = ctx
+        self._ctx = ctx
 
     # lines
     
     @active
-    def line(start, finish):
-        pass
-
-    @active
-    def tangent():
-        pass
-
-    @active
-    def parallel():
-        pass
+    def start(self, x, y):
+        return contextcad.lines.Point(x, y, self._ctx)

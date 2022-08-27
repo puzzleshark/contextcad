@@ -88,7 +88,7 @@ class LinesContext(Context):
     def __init__(self, outer_context, plane):
         super().__init__(outer_context, plane)
 
-    def workbench(self):
+    def __enter__(self):
         super().__enter__()
         return LinesWorkbench(self)
 
