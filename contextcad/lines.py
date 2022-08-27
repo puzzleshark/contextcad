@@ -11,16 +11,23 @@ class Sketch:
     def __add__(self, other):
         s = cq.Sketch()
         for seg in self._segments:
-            s = s.segment((seg.sx, seg.sy), (seg.ex, seg.ey))
+
+            if isinstance(seg, Line):
+                s = s.segment((seg.sx, seg.sy), (seg.ex, seg.ey))
+            else:
+                s = s.arc((seg.sx, seg.sy), (seg.mx, seg.my), (seg.ex, seg.ey))
+
         for seg in other._segments:
-            s = s.segment((other.sx, other.sy), (other.ex, other.ey))
+            if isinstance(seg, Line):
+                s = s.segment((other.sx, other.sy), (other.ex, other.ey))
+            else:
+                s = s.arc((seg.sx, seg.sy), (seg.mx, seg.my), (seg.ex, seg.ey))
         self._ctx.current().set_for_display(s)
         return Sketch([*self._segments, *other._segments], self._ctx)
 
-
-
     def close(self):
         pass
+
 
 class Line(Sketch):
     
@@ -41,16 +48,18 @@ class Line(Sketch):
         return UnDirectedLine(self.ex, self.ey, self._ctx)
     
     def arc(self):
-        return UnDirectedArc(self.ex, self.ey)
+        return UnDirectedArc(self.ex, self.ey, self._ctx)
 
-class Arc:
-    def __init__(self, sx, sy, mx, my, ex, ey):
+
+class Arc(Sketch):
+    def __init__(self, sx, sy, mx, my, ex, ey, ctx):
         self.sx = sx
         self.sy = sy
         self.mx = mx
         self.my = my
         self.ex = ex
         self.ey = ey
+        super().__init__([self], ctx)
 
 
 class Point:
@@ -64,7 +73,7 @@ class Point:
         return UnDirectedLine(self.x, self.y, self._ctx)
     
     def arc(self):
-        return UnDirectedArc(self.x, self.y)
+        return UnDirectedArc(self.x, self.y, self._ctx)
 
 
 class UnDirectedLine:
@@ -104,4 +113,6 @@ class UnDirectedArc:
         self._ctx = ctx
         
     def to(self, mx, my, ex, ey):
-        return Line(self.x, self.y, x, y)
+        s = cq.Sketch().arc((self.x, self.y), (mx, my), (ex, ey))
+        self._ctx.current().set_for_display(s)
+        return Arc(self.x, self.y, mx, my, ex, ey, self._ctx)
