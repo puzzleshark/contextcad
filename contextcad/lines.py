@@ -52,7 +52,7 @@ class Line(Sketch):
     
     def arc(self):
         return UnDirectedArc(self.ex, self.ey, self._ctx)
-
+    
 
 class Arc(Sketch):
     def __init__(self, sx, sy, mx, my, ex, ey, ctx):
@@ -102,8 +102,9 @@ class DirectedLine:
         self._parent_line = parent_line
         
     def distance(self, d):
+        plane = self._ctx.current().plane
         s = (
-            cq.Sketch()
+            cq.Sketch(plane)
             .segment((self._parent_line.sx, self._parent_line.sy), (self._parent_line.ex, self._parent_line.ey), "s1", forConstruction=True) 
             .segment(d, 0, "s2")
             .constrain("s1", "Fixed", None)
@@ -112,7 +113,10 @@ class DirectedLine:
             .solve()
         )
         self._ctx.current().set_for_display(s)
-                
+        start = plane.toLocalCoords(s._edges[-1].Vertices()[0].Center())
+        end = plane.toLocalCoords(s._edges[-1].Vertices()[1].Center())
+        return Line(start.x, start.y, end.x, end.y, self._ctx)
+        # print("ok!")
 
 
 class DirectedArc:
