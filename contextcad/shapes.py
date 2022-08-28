@@ -24,7 +24,7 @@ class Face:
         s._faces = self._wraps
         new_context = self._ctx.current()
         wp = (
-            cq.Workplane(new_context.plane)
+            cq.Workplane(self._ctx.plane)
             .placeSketch(s)
             .extrude(distance)
         )
@@ -35,8 +35,9 @@ class Face:
 class Circle(Face):
 
     def __init__(self, radius, ctx):
+        current = ctx.current()
         s = (
-            cq.Sketch()
+            cq.Sketch(current.plane)
             .circle(radius)
         )
         ctx.current().set_for_display(s)
@@ -46,8 +47,9 @@ class Circle(Face):
 class Rect(Face):
 
     def __init__(self, width, height, ctx):
+        current = ctx.current()
         s = (
-            cq.Sketch()
+            cq.Sketch(current.plane)
             .rect(width, height)
         )
         ctx.current().set_for_display(s)
