@@ -44,6 +44,9 @@ class Line(Sketch):
     def tangent(self):
         pass
     
+    def angle(self, a):
+        return DirectedLine(self.ex, self.ey, a, self._ctx, self)
+
     def line(self):
         return UnDirectedLine(self.ex, self.ey, self._ctx)
     
@@ -91,10 +94,25 @@ class UnDirectedLine:
 
 class DirectedLine:
 
-    def __init__(self, x, y, a):
+    def __init__(self, x, y, a, ctx, parent_line):
         self.x = x
         self.y = y
         self.a = a
+        self._ctx = ctx
+        self._parent_line = parent_line
+        
+    def distance(self, d):
+        s = (
+            cq.Sketch()
+            .segment((self._parent_line.sx, self._parent_line.sy), (self._parent_line.ex, self._parent_line.ey), "s1", forConstruction=True) 
+            .segment(d, 0, "s2")
+            .constrain("s1", "Fixed", None)
+            .constrain("s1", "s2", "Coincident", None)
+            .constrain("s1", "s2", "Angle", self.a)
+            .solve()
+        )
+        self._ctx.current().set_for_display(s)
+                
 
 
 class DirectedArc:

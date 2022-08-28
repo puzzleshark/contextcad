@@ -113,5 +113,5 @@ class LinesWorkbench():
     # lines
     
     @active
-    def start(self, x, y):
+    def point(self, x, y):
         return contextcad.lines.Point(x, y, self._ctx)
