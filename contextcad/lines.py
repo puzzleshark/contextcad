@@ -42,10 +42,10 @@ class Line(Sketch):
         super().__init__([self], ctx)
     
     def tangent(self):
-        pass
+        return DirectedPoint(self.ex, self.ey, 0, self._ctx, self)
     
     def angle(self, a):
-        return DirectedLine(self.ex, self.ey, a, self._ctx, self)
+        return DirectedPoint(self.ex, self.ey, a, self._ctx, self)
 
     def line(self):
         return UnDirectedLine(self.ex, self.ey, self._ctx)
@@ -68,36 +68,53 @@ class Arc(Sketch):
 class Point:
 
     def __init__(self, x, y, ctx):
-        self.x = x
-        self.y = y
+        self._x = x
+        self._y = y
         self._ctx = ctx
 
     def line(self):
-        return UnDirectedLine(self.x, self.y, self._ctx)
+        return UnDirectedLine(self._x, self._y, self._ctx)
     
     def arc(self):
-        return UnDirectedArc(self.x, self.y, self._ctx)
+        return UnDirectedArc(self._x, self._y, self._ctx)
 
 
 class UnDirectedLine:
 
     def __init__(self, x, y, ctx):
-        self.x = x
-        self.y = y
+        self._x = x
+        self._y = y
         self._ctx = ctx
         
     def to(self, x, y):
-        s = cq.Sketch().segment((self.x, self.y), (x, y))
+        s = cq.Sketch().segment((self._x, self._y), (x, y))
         self._ctx.current().set_for_display(s)
-        return Line(self.x, self.y, x, y, self._ctx)
+        return Line(self._x, self._y, x, y, self._ctx)
+
+
+class DirectedPoint:
+
+    def __init__(self, x, y, a, ctx, parent_line):
+        self._x = x
+        self._y = y
+        self._a = a
+        self._ctx = ctx
+        self._parent_line = parent_line
+        
+    def line(self):
+        return DirectedLine(self._x, self._y, self._a, self._ctx, self._parent_line)
+    
+    def arc(self):
+        return DirectedArc(self._x, self,_y, self._a)
+
 
 
 class DirectedLine:
 
     def __init__(self, x, y, a, ctx, parent_line):
-        self.x = x
-        self.y = y
-        self.a = a
+        self._x = x
+        self._y = y
+        self._a = a
         self._ctx = ctx
         self._parent_line = parent_line
         
@@ -109,14 +126,14 @@ class DirectedLine:
             .segment(d, 0, "s2")
             .constrain("s1", "Fixed", None)
             .constrain("s1", "s2", "Coincident", None)
-            .constrain("s1", "s2", "Angle", self.a)
+            .constrain("s1", "s2", "Angle", self._a)
             .solve()
         )
-        self._ctx.current().set_for_display(s)
         start = plane.toLocalCoords(s._edges[-1].Vertices()[0].Center())
         end = plane.toLocalCoords(s._edges[-1].Vertices()[1].Center())
+        s = cq.Sketch().segment((start.x, start.y), (end.x, end.y))
+        self._ctx.current().set_for_display(s)
         return Line(start.x, start.y, end.x, end.y, self._ctx)
-        # print("ok!")
 
 
 class DirectedArc:
@@ -125,6 +142,12 @@ class DirectedArc:
         self.x = x
         self.y = y
         self.a = a
+    
+    def radius(r):
+        pass
+
+    def to(x, y):
+        pass 
 
 
 class UnDirectedArc:
