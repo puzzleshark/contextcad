@@ -44,6 +44,12 @@ class Context(abc.ABC):
     def set_for_display(self, shape):
         self.objects.append(shape)
     
+    def workplane(self):
+        if len(self.objects) > 0:
+            if isinstance(self.objects[-1], Context):
+                return self.objects[-1].workplane()
+            return self.objects[-1]
+
     def _ipython_display_(self):
         if len(self.objects) > 0:
             return self.objects[-1]._ipython_display_()

@@ -105,7 +105,7 @@ class DirectedPoint:
         return DirectedLine(self._x, self._y, self._a, self._ctx, self._parent_line)
     
     def arc(self):
-        return DirectedArc(self._x, self,_y, self._a)
+        return DirectedArc(self._x, self._y, self._a, self._ctx, self._parent_line)
 
 
 
@@ -138,14 +138,30 @@ class DirectedLine:
 
 class DirectedArc:
 
-    def __init__(self, x, y, a):
-        self.x = x
-        self.y = y
-        self.a = a
-    
-    def radius(r):
-        pass
+    def __init__(self, x, y, a, ctx, parent_line):
+        self._x = x
+        self._y = y
+        self._a = a
+        self._ctx = ctx
+        self._parent_line = parent_line 
 
+    def radius(self, r):
+        plane = self._ctx.current().plane
+        s = (
+            cq.Sketch(plane)
+            .segment((self._parent_line.sx, self._parent_line.sy), (self._parent_line.ex, self._parent_line.ey), "s1")
+            .arc((self._x, self._y), (self._x + 1, self._y + 1), (self._x + 2, self._y), "a1")
+            .constrain("s1", "Fixed", None)
+            .constrain("s1", "a1", "Coincident", None)
+            .constrain("s1", "a1", "Angle", self._a)
+            .constrain("a1", "Radius", r)
+            .solve()
+        )
+        print(s._edges[-1].ShapeType())
+        print(dir(s))
+        print(dir(s._edges[0]))
+        print(s.tag("a1")._solve_status["entities"][1])
+        cq.Sketch().arc()
     def to(x, y):
         pass 
 
